@@ -74,6 +74,7 @@ only showing top 5 rows
 >>> data.count()
 3098
 
+==================Data cleaning : dropping rows having misiing information
 >>> data.dropna()
 DataFrame[lsoa_code: string, borough: string, major_category: string, minor_category: string, value: string, year: string, month: string]
 
