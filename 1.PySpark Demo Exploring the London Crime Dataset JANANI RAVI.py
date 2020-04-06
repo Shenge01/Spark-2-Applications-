@@ -74,7 +74,8 @@ only showing top 5 rows
 >>> data.count()
 3098
 
-==================Data cleaning : dropping rows having misiing information
+==================Data cleaning : dropping rows having missing information
+ 
 >>> data.dropna()
 DataFrame[lsoa_code: string, borough: string, major_category: string, minor_category: string, value: string, year: string, month: string]
 
@@ -91,6 +92,8 @@ root
  |-- year: string (nullable = true)
  |-- month: string (nullable = true)
 
+================= Dropping column which is not required :---- using drop()
+  
 >>> data = data.drop('lsoa_code')
 
 >>> data.show(5)
@@ -104,6 +107,8 @@ root
 |Wandsworth|             Robbery|   Personal Property|    0|2008|    6|
 +----------+--------------------+--------------------+-----+----+-----+
 only showing top 5 rows
+
+=========================Unique values in dataset :- distinct()
 
 >>> total_borough = data.select('borough').distinct()
 
@@ -122,6 +127,8 @@ only showing top 5 rows
 >>> total_borough.count()
 33                                                                              
 
+==================Filtering data :-    filter()
+
 >>> hackney_data = data.filter(data['borough'] == 'Hackney')
 
 >>> hackney_data.show(5)
@@ -136,6 +143,8 @@ only showing top 5 rows
 +-------+--------------------+--------------------+-----+----+-----+
 only showing top 5 rows
 
+===============Filtering use isin() to filter out data
+
 >>> data_2015_2016 = data.filter(data['year'].isin(['2015','2016']))
 
 >>> data_2015_2016.show(5)
@@ -149,6 +158,8 @@ only showing top 5 rows
 |   Sutton|  Theft and Handling|Theft/Taking of P...|    1|2016|    8|
 +---------+--------------------+--------------------+-----+----+-----+
 only showing top 5 rows
+
+==========================taking Sample :- sample of fraction (0.1)
 
 >>> data_2015_2016.sample(fraction=0.1).show()
 Traceback (most recent call last):
