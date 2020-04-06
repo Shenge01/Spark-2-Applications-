@@ -52,6 +52,8 @@ root
 |             Denmark|     6.33|            0.831|
 |               India|     6.94|            0.534|
 
+===================> groupBy can only be used by pair RDD and you can only group by the key of pair.
+
 >>> df_new_1.groupBy('Country').min().show()
 
 >>> df_new_1.groupBy('Country').count().show()
