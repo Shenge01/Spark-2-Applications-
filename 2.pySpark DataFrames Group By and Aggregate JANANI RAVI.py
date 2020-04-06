@@ -68,6 +68,8 @@ root
 |               India|   12|
 |            Portugal|    1|
 
+========================> Performing aggregation  ==> sum :-
+
 >>> df_new_1.agg({'Gross Margin':'sum'}).show()
 
 +------------------+
@@ -97,7 +99,18 @@ root
 |             Denmark|            0.831|
 |               India|            0.534|
 
+====================> Renaming coulmn using - withColumnRenamed("<old_col_name>","new_col_name")
 
+>>> max_Gross_margin_by_countries = df.groupBy('Country')\
+							.agg({'Gross Margin':'max'})\
+							.withColumnRenamed("max(Gross Margin)","Maximum_By_Country")
+
+===================> We can perform sum aggregation without a groupby on renamed column
+
+>>> SUM_max_Gross_margin_by_countries = max_Gross_margin_by_countries.agg("Maximum_By_Country":"sum")	
+
+
+	
 >>> from pyspark.sql.functions import *
 
 >>> df.select(avg('Gross Margin')).show()
@@ -163,7 +176,9 @@ data_2014_onwards.sample(fraction=0.1).show()
 |     India|           3.5172|
 +----------+-----------------+
 
->>> df_new_usa_sum = df_new.groupBy('Country').agg({"Gross Margin":"sum"}).withColumnRenamed("sum(Gross Margin)","Country_Gross_Margin")
+>>> df_new_usa_sum = df_new.groupBy('Country')\
+			   .agg({"Gross Margin":"sum"})\
+			   .withColumnRenamed("sum(Gross Margin)","Country_Gross_Margin")
 >>> df_new_usa_sum.show()
 
 +--------------------+--------------------+
@@ -185,15 +200,19 @@ NOTE:- withColumnRenamed() -->
 |       1560.1977999999986|
 +-------------------------+
 
-# Access the value of cell by calling collect and store result
+=================================== Access the value of cell by calling collect and store result :-
+
 >>> TOTAL_All_Country_Gross_Margin = TOTAL_Country_Gross_Margin.collect()[0][0]
 
 >>> import pyspark.sql.functions as func
 
->>> Percentage_Contributioin = df_new_usa_sum.withColumn("Percentage %", func.round(df_new_usa_sum.Country_Gross_Margin / TOTAL_All_Country_Gross_Margin * 100,2))
+>>> Percentage_Contributioin = df_new_usa_sum\
+		.withColumn("Percentage %", func.round(df_new_usa_sum.Country_Gross_Margin / TOTAL_All_Country_Gross_Margin * 100,2))
 
 
 NOTE:- withColumn() -->
+	
+=================================printSchema() :- to show schema of dataframe
 
 >>> Percentage_Contributioin.printSchema()
 root
